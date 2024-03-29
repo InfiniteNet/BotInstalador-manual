@@ -23,7 +23,7 @@ INSTALAR O NODE E POSTGRES
 	sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 	wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 	sudo apt-get update -y && sudo apt-get -y install postgresql
-	sudo timedatectl set-timezone America/%SeuTimezone%
+	sudo timedatectl set-timezone America/Sao_Paulo
 ```
 	
 INTALAR O DOCKER
@@ -75,7 +75,7 @@ CRIAR USUARIO DEPLOY</br>
 CLONAR O REPOSITORIO</br>
 ```bash
 	su deploy
-	sudo apt install -y git && git clone https://github.com/%SeuRepositório%.git  /home/deploy/mybotifnt
+	sudo apt install -y git && git clone https://github.com/InfiniteNet/whaticket-saas-typebot.git  /home/deploy/mybotifnt
 ```
 	
 @@@@@@@@@@@@@##############-- BACKEND --##############@@@@@@@@@@@@@</br>
@@ -84,12 +84,12 @@ CRIAR O REDIS E BANCO POSTGRES</br>
 ```bash	
 	sudo su root
 	usermod -aG docker deploy
-	docker run --name redis-%NomeRedis% -p 5000:6379 --restart always --detach redis redis-server --requirepass %SenhaRedis%
+	docker run --name redis-mybotifnt -p 5000:6379 --restart always --detach redis redis-server --requirepass gvt946894334
 	sudo su - postgres
-	createdb %Nomebanco%;
+	createdb mybotifnt;
 	psql
-	CREATE USER %Userbanco% SUPERUSER INHERIT CREATEDB CREATEROLE;
-	ALTER USER %Userbanco% PASSWORD '%SenhaUser%';
+	CREATE USER admin SUPERUSER INHERIT CREATEDB CREATEROLE;
+	ALTER USER admin PASSWORD 'gvt946894334';
 	\q
 	exit
 ```	
@@ -103,8 +103,8 @@ CRIAR VARIAVEL DE AMBIENTE</br>
 	%%%%%%%%% sudo nano .env %%%%%%%%%
 ------------Editar o arquivo com os dados abaixo--------------
 NODE_ENV=  
-BACKEND_URL=https://api.seudomínio.com.br
-FRONTEND_URL=https://app.seudomínio.com.br
+BACKEND_URL=https://botapi.infinitenet.net
+FRONTEND_URL=https://mybot.infinitenet.net
 PORT=4000  
 PROXY_PORT=443
 CHROME_BIN=/usr/bin/google-chrome-stable
@@ -112,9 +112,9 @@ CHROME_BIN=/usr/bin/google-chrome-stable
 DB_DIALECT=postgres  
 DB_HOST=localhost  
 DB_TIMEZONE=-04:00  
-DB_USER= %Userdb% 
-DB_PASS= %Passdb%
-DB_NAME= %Nomedb%
+DB_USER= mybotifnt 
+DB_PASS= gvt946894334
+DB_NAME= mybotifnt
 
 rootPath=/var/www/backend
 
@@ -124,7 +124,7 @@ CONNECTIONS_LIMIT=2
 JWT_SECRET=5g1yk7pD9q3YL0isdutyi
 JWT_REFRESH_SECRET=F2c8gag5nvqQkasadr
 
-REDIS_URI=redis://:%SenhaRedis%@127.0.0.1:5000
+REDIS_URI=redis://:gvt946894334@127.0.0.1:5000
 REDIS_OPT_LIMITER_MAX=1
 REDIS_OPT_LIMITER_DURATION=3000
 
@@ -200,7 +200,7 @@ CRIAR VARIAVEL DE AMBIENTE</br>
 ```bash	
 	cd /home/deploy/mybotifnt/frontend	
 	%%%%%%%%% sudo nano .env %%%%%%%%%
-		REACT_APP_BACKEND_URL=https://api.seudomínio.com.br
+		REACT_APP_BACKEND_URL=https://botapi.infinitenet.net
 		REACT_APP_HOURS_CLOSE_TICKETS_AUTO = 24
 ```		
 
@@ -237,7 +237,7 @@ CONFIGURAÇÃO DO NGINX</br>
 	%%%%%%%%%    sudo nano /etc/nginx/sites-available/mybotifnt-frontend    %%%%%%%%%
 	
 	server {
-  server_name app.seudomíno.com.br;
+  server_name mybot.infinitenet.net;
   location / {
     proxy_pass http://127.0.0.1:3000;
     proxy_http_version 1.1;
@@ -259,6 +259,6 @@ CONFIGURAÇÃO DO NGINX</br>
 
 RODAR O CERTBOT PARA GERAR O SSL</br>
 ```bash
-	certbot -m %SeuEmail% --nginx --agree-tos --non-interactive --domains app.seudomínio.com.br,api.seudomínio.com.br
+	certbot -m adm@infinitenet.net --nginx --agree-tos --non-interactive --domains mybot.infinitenet.net,botapi.infinitenet.net
 ```
 
