@@ -75,7 +75,7 @@ CRIAR USUARIO DEPLOY</br>
 CLONAR O REPOSITORIO</br>
 ```bash
 	su deploy
-	sudo apt install -y git && git clone https://github.com/%SeuRepositório%.git  /home/deploy/%instancia%
+	sudo apt install -y git && git clone https://github.com/%SeuRepositório%.git  /home/deploy/mybotifnt
 ```
 	
 @@@@@@@@@@@@@##############-- BACKEND --##############@@@@@@@@@@@@@</br>
@@ -97,7 +97,7 @@ CRIAR O REDIS E BANCO POSTGRES</br>
 CRIAR VARIAVEL DE AMBIENTE</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
+	cd /home/deploy/mybotifnt/backend
 ```
 ```bash	
 	%%%%%%%%% sudo nano .env %%%%%%%%%
@@ -136,41 +136,41 @@ SKIP_PREFLIGHT_CHECK=true
 INSTALAÇÃO DAS DEPENDENCIAS</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
+	cd /home/deploy/mybotifnt/backend
 	npm install
 ```
 COMPILANDO O CÓDIGO DO BACKEND</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
+	cd /home/deploy/mybotifnt/backend
 	npm run build
 ```
 
 CRIANDO AS TABELAS NO BANCO</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
+	cd /home/deploy/mybotifnt/backend
 	npx sequelize db:migrate
 ```
 
 PUPULANDO AS TABELAS DO BANCO</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
+	cd /home/deploy/mybotifnt/backend
 	npx sequelize db:seed:all
 ```	
 	
 INICIANDO O SERVIÇO PM2</br>
 	----Utilizando usuario deploy no diretótio backend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/backend
-	pm2 start dist/server.js --name %instancia%-backend
+	cd /home/deploy/mybotifnt/backend
+	pm2 start dist/server.js --name mybotifnt-backend
 ```
 
 CONFIGURAÇÃO DO NGINX</br>
 	----Utilizando usuario root no diretótio etc----</br>
 ```bash	
-	%%%%%%%%%    sudo nano /etc/nginx/sites-available/%instancia%-backend    %%%%%%%%% 
+	%%%%%%%%%    sudo nano /etc/nginx/sites-available/mybotifnt-backend    %%%%%%%%% 
 
 	server {
   server_name api.seudomínio.com.br;
@@ -190,7 +190,7 @@ CONFIGURAÇÃO DO NGINX</br>
 	
 ```bash	
 	----Gerando link simbólico----
-	ln -s /etc/nginx/sites-available/%instancia%-backend /etc/nginx/sites-enabled
+	ln -s /etc/nginx/sites-available/mybotifnt-backend /etc/nginx/sites-enabled
 ```
 
 @@@@@@@@@@@@#######--- FRONTEND ---########@@@@@@@@@@</br>
@@ -198,7 +198,7 @@ CONFIGURAÇÃO DO NGINX</br>
 CRIAR VARIAVEL DE AMBIENTE</br>
 	----Utilizando usuario deploy no diretótio frontend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/frontend	
+	cd /home/deploy/mybotifnt/frontend	
 	%%%%%%%%% sudo nano .env %%%%%%%%%
 		REACT_APP_BACKEND_URL=https://api.seudomínio.com.br
 		REACT_APP_HOURS_CLOSE_TICKETS_AUTO = 24
@@ -207,22 +207,22 @@ CRIAR VARIAVEL DE AMBIENTE</br>
 INSTALANDO DEPENDENCIAS DO FRONTEND</br>
 	----Utilizando usuario deploy no diretótio frontend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/frontend
+	cd /home/deploy/mybotifnt/frontend
 	npm install
 ```
 	
 COMPILANDO O CODIGO DO FRONTEND</br>
 	----Utilizando usuario deploy no diretótio frontend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/frontend
+	cd /home/deploy/mybotifnt/frontend
 	npm run build
 ```
 
 INICIANDO O PM2</br>
 	----Utilizando usuario deploy no diretótio frontend----</br>
 ```bash	
-	cd /home/deploy/%instancia%/frontend
-	pm2 start server.js --name %instancia%-frontend
+	cd /home/deploy/mybotifnt/frontend
+	pm2 start server.js --name mybotifnt-frontend
 	pm2 save
 ```	
 	----Configuração para o PM2 iniciar com o Ubuntu----</br>
@@ -234,7 +234,7 @@ INICIANDO O PM2</br>
 CONFIGURAÇÃO DO NGINX</br>
 	----Utilizando usuario root no diretótio etc----</br>
 ```bash
-	%%%%%%%%%    sudo nano /etc/nginx/sites-available/%instancia%-frontend    %%%%%%%%%
+	%%%%%%%%%    sudo nano /etc/nginx/sites-available/mybotifnt-frontend    %%%%%%%%%
 	
 	server {
   server_name app.seudomíno.com.br;
@@ -254,7 +254,7 @@ CONFIGURAÇÃO DO NGINX</br>
 	
 ```bash	
 	----Gerando link simbólico----
-	sudo ln -s /etc/nginx/sites-available/%instancia%-frontend /etc/nginx/sites-enabled
+	sudo ln -s /etc/nginx/sites-available/mybotifnt-frontend /etc/nginx/sites-enabled
 ```
 
 RODAR O CERTBOT PARA GERAR O SSL</br>
